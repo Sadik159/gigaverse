@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GigVerse — World's First Creator Economy Gig Platform</title>
+  <meta name="description" content="Post the work you want to do. Find video editors, WhatsApp/Telegram handlers, Discord mods, social media managers and more." />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%235B21B6'/><text y='22' x='6' font-size='18'>✦</text></svg>" />
+</head>
+<body>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <div id="confettiContainer" class="confetti-container"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-brand" onclick="navigateTo('home')" style="cursor:pointer">
+      <div class="logo-icon">✦</div>
+      GigVerse
+    </div>
+    <nav class="navbar-nav">
+      <a class="nav-link" onclick="navigateTo('workers')">Browse Workers</a>
+      <a class="nav-link" onclick="navigateTo('teams')">Teams</a>
+      <a class="nav-link" onclick="navigateTo('managed')">Managed Services</a>
+      <a class="nav-link" onclick="navigateTo('verify')">AI Verify</a>
+    </nav>
+    <div class="navbar-actions">
+      <button class="btn btn-emergency btn-sm" onclick="activateEmergencyMode()">⚡ Emergency</button>
+      <button class="btn btn-ghost btn-sm" onclick="openAuthModal('client')">Log In</button>
+      <button class="btn btn-primary btn-sm" onclick="openAuthModal('worker')">Post Skills</button>
+      <button class="btn btn-icon btn-ghost" onclick="openChat(1)" title="Messages">💬</button>
+      <div class="three-dot-menu">
+        <div class="three-dot-btn" onclick="toggleDropdown('globalMenu')">⋮</div>
+        <div class="dropdown-menu" id="globalMenu">
+          <div class="dropdown-item" onclick="openCreateTeamModal()">➕ Create Team</div>
+          <div class="dropdown-item" onclick="navigateTo('teams')">👥 Join Team</div>
+          <div class="dropdown-item" onclick="navigateTo('teams')">📋 Manage Team</div>
+          <div class="dropdown-item" onclick="navigateTo('dashboard')">📊 Dashboard</div>
+          <div class="dropdown-item" onclick="navigateTo('verify')">🏅 Get Verified</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE LAYOUT -->
+  <div class="page-layout">
+
+    <!-- SIDEBAR -->
+    <div id="sidebarWrapper" style="display:none">
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">Worker</div>
+          <div class="sidebar-link" data-page="dashboard" onclick="navigateTo('dashboard')"><span class="icon">📊</span> Dashboard</div>
+          <div class="sidebar-link" data-page="verify" onclick="navigateTo('verify')"><span class="icon">🏅</span> AI Verify Skills</div>
+          <div class="sidebar-link" data-page="workers" onclick="navigateTo('workers')"><span class="icon">🔍</span> Browse Work</div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">Marketplace</div>
+          <div class="sidebar-link" data-page="workers" onclick="navigateTo('workers')"><span class="icon">👤</span> All Workers</div>
+          <div class="sidebar-link" data-page="teams" onclick="navigateTo('teams')"><span class="icon">👥</span> Teams <span class="badge-count">3</span></div>
+          <div class="sidebar-link" data-page="managed" onclick="navigateTo('managed')"><span class="icon">📋</span> Managed Services</div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">AI Tools</div>
+          <div class="sidebar-link" onclick="findClientsForMe()"><span class="icon">🤖</span> Find Me Clients</div>
+          <div class="sidebar-link" onclick="activateEmergencyMode()"><span class="icon">⚡</span> Emergency Mode</div>
+          <div class="sidebar-link" onclick="openCreateTeamModal()"><span class="icon">➕</span> Create Team</div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">Categories</div>
+          <div class="sidebar-link" onclick="filterCategory('Video Editing')"><span class="icon">🎬</span> Video Editing</div>
+          <div class="sidebar-link" onclick="filterCategory('WhatsApp')"><span class="icon">💬</span> WhatsApp / Telegram</div>
+          <div class="sidebar-link" onclick="filterCategory('Discord')"><span class="icon">🛡️</span> Discord / Livestream</div>
+          <div class="sidebar-link" onclick="filterCategory('Social Media')"><span class="icon">📱</span> Social Media</div>
+          <div class="sidebar-link" onclick="filterCategory('Photo Editing')"><span class="icon">📸</span> Photo & Design</div>
+          <div class="sidebar-link" onclick="filterCategory('AI')"><span class="icon">🤖</span> AI & Automation</div>
+        </div>
+        <div class="sidebar-section">
+          <div style="padding:16px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));border-radius:14px;color:white;text-align:center">
+            <div style="font-size:1.5rem;margin-bottom:6px">🚀</div>
+            <div style="font-family:var(--font-display);font-weight:700;font-size:0.9rem">Upgrade to Pro</div>
+            <div style="font-size:0.75rem;opacity:0.8;margin:6px 0">Unlimited proposals, priority listing & more</div>
+            <button class="btn btn-sm" style="background:rgba(255,255,255,0.2);color:white;width:100%;margin-top:6px">Learn More</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="mainContent">
+      <!-- Rendered by JS -->
+    </main>
+
+  </div><!-- end page-layout -->
+
+  <!-- FOOTER -->
+  <footer id="siteFooter" style="background:var(--charcoal);color:white;padding:48px 24px 24px;margin-top:0">
+    <div style="max-width:1200px;margin:0 auto">
+      <div class="grid grid-4 gap-8" style="margin-bottom:40px">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+            <div class="logo-icon">✦</div>
+            <span style="font-family:var(--font-display);font-weight:800;font-size:1.3rem">GigVerse</span>
+          </div>
+          <p style="font-size:0.85rem;opacity:0.65;line-height:1.7">World's first niche creator-economy gig platform. Post the work you want to do.</p>
+          <div style="display:flex;gap:10px;margin-top:16px">
+            <a href="#" style="width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;color:white;font-size:0.9rem;transition:background 0.2s" onmouseenter="this.style.background='rgba(255,255,255,0.2)'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">𝕏</a>
+            <a href="#" style="width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;color:white;font-size:0.9rem;transition:background 0.2s" onmouseenter="this.style.background='rgba(255,255,255,0.2)'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">in</a>
+            <a href="#" style="width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;color:white;font-size:0.9rem;transition:background 0.2s" onmouseenter="this.style.background='rgba(255,255,255,0.2)'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">▶</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-display);font-weight:700;margin-bottom:14px;font-size:0.9rem">For Workers</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:0.83rem;opacity:0.65">
+            <a href="#" onclick="openAuthModal('worker')" style="color:inherit">Post Your Skills</a>
+            <a href="#" onclick="navigateTo('verify')" style="color:inherit">AI Skill Verification</a>
+            <a href="#" onclick="findClientsForMe()" style="color:inherit">Find Me Clients</a>
+            <a href="#" onclick="openCreateTeamModal()" style="color:inherit">Create a Team</a>
+            <a href="#" onclick="navigateTo('managed')" style="color:inherit">Managed Services</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-display);font-weight:700;margin-bottom:14px;font-size:0.9rem">For Clients</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:0.83rem;opacity:0.65">
+            <a href="#" onclick="navigateTo('workers')" style="color:inherit">Browse Workers</a>
+            <a href="#" onclick="navigateTo('teams')" style="color:inherit">Hire a Team</a>
+            <a href="#" onclick="activateEmergencyMode()" style="color:inherit">Emergency Hiring</a>
+            <a href="#" onclick="navigateTo('managed')" style="color:inherit">Subscribe to Service</a>
+            <a href="#" onclick="findClientsForMe()" style="color:inherit">Post a Job</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-display);font-weight:700;margin-bottom:14px;font-size:0.9rem">Company</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:0.83rem;opacity:0.65">
+            <a href="#" style="color:inherit">About GigVerse</a>
+            <a href="#" style="color:inherit">Blog</a>
+            <a href="#" style="color:inherit">Careers</a>
+            <a href="#" style="color:inherit">Privacy Policy</a>
+            <a href="#" style="color:inherit">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+        <div style="font-size:0.8rem;opacity:0.5">© 2026 GigVerse. All rights reserved. Built for the creator economy.</div>
+        <div style="display:flex;gap:16px;font-size:0.8rem;opacity:0.5">
+          <span>🇮🇳 India</span>
+          <span>₹ INR</span>
+          <span>English</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════
+       ALL MODALS
+  ═══════════════════════════════════════════════════ -->
+
+  <!-- Worker Profile Modal -->
+  <div class="modal-overlay" id="workerProfileModal">
+    <div class="modal" style="max-width:600px">
+      <div class="modal-header">
+        <div class="modal-title">Worker Profile</div>
+        <div class="close-btn" onclick="Modal.close('workerProfileModal')">✕</div>
+      </div>
+      <div class="modal-body"><!-- filled by JS --></div>
+    </div>
+  </div>
+
+  <!-- Team Profile Modal -->
+  <div class="modal-overlay" id="teamProfileModal">
+    <div class="modal" style="max-width:580px">
+      <div class="modal-header">
+        <div class="modal-title">Team Profile</div>
+        <div class="close-btn" onclick="Modal.close('teamProfileModal')">✕</div>
+      </div>
+      <div class="modal-body"><!-- filled by JS --></div>
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal" style="max-width:480px">
+      <div class="modal-header">
+        <div class="modal-title">🎨 Create Worker Profile</div>
+        <div class="close-btn" onclick="Modal.close('authModal')">✕</div>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex;gap:8px;margin-bottom:24px;padding:4px;background:var(--grey-100);border-radius:9999px">
+          <button class="tab active" style="flex:1;border:none;background:white;border-radius:9999px;padding:9px;font-weight:600;color:var(--primary);cursor:pointer;font-family:var(--font-body)" onclick="switchAuthTab(this,'worker')">I'm a Worker</button>
+          <button class="tab" style="flex:1;border:none;background:transparent;border-radius:9999px;padding:9px;font-weight:600;color:var(--grey-600);cursor:pointer;font-family:var(--font-body)" onclick="switchAuthTab(this,'client')">I'm a Client</button>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" id="authName" placeholder="e.g. Arjun Mehta" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input class="form-input" id="authEmail" type="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="authPassword" type="password" placeholder="Create a strong password" />
+        </div>
+        <div id="workerFields">
+          <div class="form-group">
+            <label class="form-label">Primary Skill</label>
+            <select class="form-select" id="authSkill">
+              <option value="">Select your main skill...</option>
+              <option>Video Editing (YouTube / Shorts / Reels)</option>
+              <option>WhatsApp / Telegram Community Management</option>
+              <option>Discord Moderation</option>
+              <option>Social Media Management</option>
+              <option>Photo Editing & Design</option>
+              <option>Livestream Production</option>
+              <option>AI & Automation</option>
+              <option>Crisis Management</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <input class="form-input" id="authLocation" placeholder="e.g. Mumbai, Maharashtra" />
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:20px">
+          <input type="checkbox" id="authTerms" style="margin-top:3px;accent-color:var(--primary)" />
+          <label for="authTerms" style="font-size:0.83rem;color:var(--grey-600);cursor:pointer">I agree to GigVerse's <a href="#" style="color:var(--primary)">Terms of Service</a> and <a href="#" style="color:var(--primary)">Privacy Policy</a></label>
+        </div>
+        <button class="btn btn-primary w-full btn-lg" onclick="handleAuth()">Create Account & Get Started →</button>
+        <div style="text-align:center;margin-top:16px;font-size:0.85rem;color:var(--grey-600)">
+          Already have an account? <a href="#" style="color:var(--primary);font-weight:600" onclick="Modal.close('authModal')">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Team Modal -->
+  <div class="modal-overlay" id="createTeamModal">
+    <div class="modal" style="max-width:540px">
+      <div class="modal-header">
+        <div class="modal-title">👥 Create a New Team</div>
+        <div class="close-btn" onclick="Modal.close('createTeamModal')">✕</div>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Team Name</label>
+          <input class="form-input" id="teamName" placeholder='e.g. "Shorts Squad", "Discord Guardians"' />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Team Emoji / Icon</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            {['🎬','🛡️','📱','🚀','🔥','🎙️','🤖','💬','📸','✨'].map(e => `
+              <div onclick="selectEmoji(this,'${e}')" style="width:40px;height:40px;border-radius:10px;background:var(--grey-100);display:flex;align-items:center;justify-content:center;font-size:1.3rem;cursor:pointer;border:2px solid transparent;transition:all 0.2s" onmouseenter="this.style.borderColor='var(--accent)'" onmouseleave="if(!this.classList.contains('sel'))this.style.borderColor='transparent'">${e}</div>
+            `).join('')}
+          </div>
+          <input class="form-input" id="teamEmoji" placeholder="Or type a custom emoji" style="margin-top:10px" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Team Description</label>
+          <textarea class="form-textarea" id="teamDesc" placeholder="What does your team specialise in? What services do you offer as a group?"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Team Type</label>
+          <select class="form-select" id="teamType">
+            <option>Video Production Team</option>
+            <option>Community Management Team</option>
+            <option>Discord / Moderation Team</option>
+            <option>Social Media Team</option>
+            <option>Full-Service Content Team</option>
+            <option>WhatsApp / Telegram Team</option>
+            <option>AI & Automation Team</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Invite Members (emails, comma-separated)</label>
+          <input class="form-input" id="teamInvites" placeholder="member1@email.com, member2@email.com" />
+          <div class="form-hint">They'll receive an invite link to join your team</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Roles You Need</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            {['Editor','Thumbnail Designer','Moderator','Social Media Manager','Script Writer','Content Strategist','Livestream Producer','WA/TG Handler'].map(r => `
+              <div onclick="this.classList.toggle('active');this.style.borderColor=this.classList.contains('active')?'var(--primary)':'var(--grey-200)';this.style.color=this.classList.contains('active')?'var(--primary)':'var(--grey-600)';this.style.background=this.classList.contains('active')?'var(--lavender)':'white'" style="padding:6px 12px;border:2px solid var(--grey-200);border-radius:9999px;font-size:0.78rem;font-weight:600;color:var(--grey-600);cursor:pointer;transition:all 0.2s;background:white">${r}</div>
+            `).join('')}
+          </div>
+        </div>
+        <div style="display:flex;gap:3px;margin-bottom:16px">
+          <div style="flex:1;padding:14px;background:var(--grey-100);border-radius:12px;text-align:center">
+            <div style="font-size:1.3rem;margin-bottom:4px">🌐</div>
+            <div style="font-size:0.8rem;font-weight:600">Public Team</div>
+            <div style="font-size:0.7rem;color:var(--grey-600)">Anyone can find & apply</div>
+          </div>
+          <div style="flex:1;padding:14px;background:var(--lavender);border-radius:12px;text-align:center;border:2px solid var(--accent)">
+            <div style="font-size:1.3rem;margin-bottom:4px">🔒</div>
+            <div style="font-size:0.8rem;font-weight:600;color:var(--primary)">Private Team</div>
+            <div style="font-size:0.7rem;color:var(--primary)">Invite-only access</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="Modal.close('createTeamModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="createTeam()">🚀 Launch Team</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Find Me Clients Modal -->
+  <div class="modal-overlay" id="findClientsModal">
+    <div class="modal" style="max-width:580px">
+      <div class="modal-header">
+        <div class="modal-title">🤖 AI — Find Me Clients</div>
+        <div class="close-btn" onclick="Modal.close('findClientsModal')">✕</div>
+      </div>
+      <div class="modal-body">
+        <div style="background:linear-gradient(135deg,#1E1B4B,#312E81);border-radius:14px;padding:18px;color:white;margin-bottom:20px">
+          <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;opacity:0.7;margin-bottom:6px">🤖 AI Analysis</div>
+          <div style="font-size:0.9rem;opacity:0.85">Scanning your profile, badges, proof scores & market demand to find the best client matches…</div>
+          <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap">
+            <div><div style="font-family:var(--font-display);font-weight:700;font-size:1.1rem">94%</div><div style="font-size:0.72rem;opacity:0.7">Profile Strength</div></div>
+            <div><div style="font-family:var(--font-display);font-weight:700;font-size:1.1rem">3 badges</div><div style="font-size:0.72rem;opacity:0.7">AI Verified</div></div>
+            <div><div style="font-family:var(--font-display);font-weight:700;font-size:1.1rem">₹850/hr</div><div style="font-size:0.72rem;opacity:0.7">Your Rate</div></div>
+          </div>
+        </div>
+        <div style="font-weight:700;font-family:var(--font-display);margin-bottom:14px;color:var(--primary-dark)">Best Client Matches for You</div>
+        <div id="clientMatchList">
+          <div style="text-align:center;padding:30px">
+            <div class="skeleton" style="width:80%;height:16px;margin:0 auto 10px;border-radius:8px"></div>
+            <div class="skeleton" style="width:60%;height:12px;margin:0 auto 8px;border-radius:6px"></div>
+            <div class="skeleton" style="width:70%;height:12px;margin:0 auto;border-radius:6px"></div>
+            <div style="margin-top:14px;font-size:0.82rem;color:var(--grey-500)">🤖 AI finding your best matches…</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="Modal.close('findClientsModal')">Close</button>
+        <button class="btn btn-primary" onclick="findClientsForMe()">🔄 Refresh Matches</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Modal -->
+  <div class="modal-overlay" id="chatModal">
+    <div class="modal" style="max-width:500px">
+      <div class="modal-header">
+        <div class="chat-header" style="padding:0;border:none;display:flex;align-items:center;gap:10px;width:100%">
+          <!-- filled by JS -->
+        </div>
+        <div class="close-btn" onclick="Modal.close('chatModal')">✕</div>
+      </div>
+      <div class="modal-body" style="padding:0">
+        <div class="chat-window" style="border:none;border-radius:0;height:420px">
+          <div class="chat-messages"><!-- filled by JS --></div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="chatInputField" placeholder="Type a message…" />
+            <button class="btn btn-primary btn-icon" onclick="sendChatMessage()">➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Verify Test Modal -->
+  <div class="modal-overlay" id="verifyTestModal">
+    <div class="modal" style="max-width:500px">
+      <div class="modal-header">
+        <div class="modal-title">🏅 AI Skill Certification</div>
+        <div class="close-btn" onclick="Modal.close('verifyTestModal')">✕</div>
+      </div>
+      <div class="modal-body"><!-- filled by JS --></div>
+    </div>
+  </div>
+
+  <!-- Emergency Workers Modal -->
+  <div class="modal-overlay" id="emergencyWorkersModal">
+    <div class="modal" style="max-width:600px">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" style="color:var(--emergency)">⚡ Emergency Workers Available Now</div>
+          <div style="font-size:0.8rem;color:var(--grey-600);margin-top:3px">Rush pricing: 1.5x–2x normal rate • Response in &lt;10 minutes</div>
+        </div>
+        <div class="close-btn" onclick="Modal.close('emergencyWorkersModal')">✕</div>
+      </div>
+      <div class="modal-body" id="emergencyWorkersList">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Hire Confirm Modal -->
+  <div class="modal-overlay" id="hireConfirmModal">
+    <div class="modal" style="max-width:440px">
+      <div class="modal-header">
+        <div class="modal-title">⚡ Confirm Hire</div>
+        <div class="close-btn" onclick="Modal.close('hireConfirmModal')">✕</div>
+      </div>
+      <div class="modal-body" id="hireConfirmBody"><!-- filled by JS --></div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
